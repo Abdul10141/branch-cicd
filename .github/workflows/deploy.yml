@@ -1,0 +1,37 @@
+name: Branch Based CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+      - uat
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Identify Branch
+        run: echo "Running on branch $GITHUB_REF_NAME"
+
+      - name: DEV Deployment
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          echo "Deploying DEV Environment"
+          cat index.html
+
+      - name: UAT Deployment
+        if: github.ref == 'refs/heads/uat'
+        run: |
+          echo "Deploying UAT Environment"
+          cat index.html
+
+      - name: PROD Deployment
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Deploying PRODUCTION Environment"
+          cat index.html
